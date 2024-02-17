@@ -2,6 +2,10 @@ from pygame import *
 from random import randint
 import os
 
+init()
+font.init()
+mixer.init()
+
 WIDTH, HEIGHT = 900,600
 
 bg_image = image.load('background-1.png')
@@ -18,6 +22,7 @@ mixer.music.set_volume(0.4)
 
 class GameSprite(sprite.Sprite):
     def __init__(self, sprite_img, width, height, rect_x, rect_y, speed):
+
         self.image = transform.scale(sprite_img, (width, height))
         self.rect = self.image.get_rect()
         self.rect.x = rect_x
@@ -30,17 +35,74 @@ class GameSprite(sprite.Sprite):
 
 class Player(GameSprite):
     def update(self):
-        keys_pressed = key.get_pressed()
+        keys = key.get_pressed()
+        if keys[K_d] and self.rect.x < 700:
+            self.rect.x += self.speed
+        if keys[K_a] and self.rect.x > 150:
+            self.rect.x -= self.speed
+        if keys[K_w] and self.rect.y > 50:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < 500:
+            self.rect.y += self.speed
+class Enemy(GameSprite):
+
+    def update(self):
+
+        if self.rect.y < HEIGHT:
+            self.rect.y += self.speed
+
+
 
 
 
 
 window = display.set_mode((WIDTH, HEIGHT))
 
+bg = transform.scale(bg_image, (WIDTH, HEIGHT))
 
 
+enemys = sprite.Group()
+
+lost = 0
+
+
+
+for i in range(9):
+
+    rand_race = randint(1, 4)
+    rand_y = randint(-200, -20)
+    rand_speed = randint(2, 4)
+    if rand_race == 1:
+        enemy = Enemy(enemy_image1, 50, 100, 50, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 2:
+        enemy = Enemy(enemy_image1, 50, 100, 100, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 3:
+        enemy = Enemy(enemy_image1, 50, 100, 150, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 4:
+        enemy = Enemy(enemy_image1, 50, 100, 200, rand_y, rand_speed)
+        enemys.add(enemy)
+
+
+player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
+FPS = 60
 game = True
 finish = False
 clock = time.Clock()
 while game:
-    pass
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+    if not finish:
+        window.blit(bg, (0, 0))
+        player.draw()
+
+
+        player.update()
+        enemys.update(window)
+
+
+    display.update()
+    clock.tick(FPS)
