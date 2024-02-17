@@ -58,19 +58,19 @@ def random_car():
 
     rand_race = randint(1, 4)
     rand_y = randint(-200, -20)
-    rand_speed = randint(2, 4)
+    rand_speed = randint(10, 15)
     enemy_image = choice(enemy_images)
     if rand_race == 1:
-        enemy = Enemy(enemy_image, 50, 100, 150, rand_y, rand_speed)
+        enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
         enemys.add(enemy)
     if rand_race == 2:
         enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
         enemys.add(enemy)
     if rand_race == 3:
-        enemy = Enemy(enemy_image, 50, 100, 400, rand_y, rand_speed)
+        enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
         enemys.add(enemy)
     if rand_race == 4:
-        enemy = Enemy(enemy_image, 50, 100, 550, rand_y, rand_speed)
+        enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
         enemys.add(enemy)
 
 
@@ -98,6 +98,8 @@ clock = time.Clock()
 random_car()
 start_time = time.get_ticks()
 rand_interval = randint(1000, 3000)
+font1 = font.SysFont("Aril", 60)
+
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -107,6 +109,10 @@ while game:
             random_car()
             start_time = time.get_ticks()
             rand_interval = randint(1000, 3000)
+
+        spritelist = sprite.spritecollide(player,enemys, False)
+        for collide in spritelist:
+            finish = True
 
         window.blit(bg, (0, 0))
         player.draw()
