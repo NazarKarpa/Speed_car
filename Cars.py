@@ -1,6 +1,11 @@
+import pygame.locals
 from pygame import *
 from random import randint, choice
+
 import os
+import sys
+
+
 
 init()
 font.init()
@@ -16,7 +21,13 @@ enemy_image1 = image.load('car-truck2.png')
 enemy_image2 = image.load('car-truck4.png')
 enemy_image3 = image.load('car-truck5.png')
 
+menu_bg = image.load('background-1.png')
+
+button_play = image.load('PlayButton.png')
+
 enemy_images = [enemy_image1, enemy_image2, enemy_image3]
+
+font_meny = font.SysFont('arial', 50)
 
 mixer.music.load('run car.mp3')
 mixer.music.set_volume(0.4)
@@ -53,6 +64,18 @@ class Enemy(GameSprite):
         if self.rect.y < HEIGHT:
             self.rect.y += self.speed
 
+
+class Menu():
+    pass
+
+
+
+
+
+
+
+
+
 def random_car():
 
 
@@ -76,9 +99,14 @@ def random_car():
 
 
 
+
+
+
+
 window = display.set_mode((WIDTH, HEIGHT))
 
 bg = transform.scale(bg_image, (WIDTH, HEIGHT))
+
 
 
 enemys = sprite.Group()
@@ -87,20 +115,38 @@ lost = 0
 
 
 
-
-
-
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
-game = True
+game = False
 finish = False
+
+
+
 clock = time.Clock()
 random_car()
-start_time = time.get_ticks()
-rand_interval = randint(1000, 3000)
-font1 = font.SysFont("Aril", 60)
 
+rand_interval = randint(1000, 3000)
+font1 = font.SysFont("Aril", 35)
+
+menu = True
+
+while menu:
+    for e in event.get():
+        if e.type == QUIT:
+            menu = False
+
+
+
+    window.blit(bg, (0, 0))
+
+
+    display.update()
+    clock.tick(FPS)
+
+start_time = time.get_ticks()
+start_time1 = time.get_ticks()
 while game:
+
     for e in event.get():
         if e.type == QUIT:
             game = False
@@ -109,12 +155,20 @@ while game:
             random_car()
             start_time = time.get_ticks()
             rand_interval = randint(1000, 3000)
+        time_tick = (time.get_ticks() - start_time1) / 1000
+
+
 
         spritelist = sprite.spritecollide(player,enemys, False)
         for collide in spritelist:
             finish = True
+        if time_tick > 10:
+            finish = True
 
         window.blit(bg, (0, 0))
+
+        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
+        window.blit(txt_time, (30, 30))
         player.draw()
         enemys.draw(window)
 
