@@ -71,17 +71,19 @@ class Menu():
 
 
 def start():
+    global rand_speed
     global start_time1
-    global level_1
-    global level_2
+    global level
     global start_time
     global rand_interval
     global finish
+
+
     for e in event.get():
         if e.type == QUIT:
-            level_1 = False
-            level_2 = False
+            finish = True
     if not finish:
+
 
         if time.get_ticks() - start_time > rand_interval:
             random_car()
@@ -90,44 +92,31 @@ def start():
         time_tick = (time.get_ticks() - start_time1) / 1000
 
 
-
-
-
-
-
-
-
         spritelist = sprite.spritecollide(player,enemys, False)
         for collide in spritelist:
             finish = True
-        if level_1 == True:
+
             if time_tick > 10:
+                level + 1
                 time_tick = 0
                 start_time1 = 0
                 time_tick = (time.get_ticks() - start_time1) / 1000
 
 
-                finish = True
+
 
                 if finish == True:
-
-
-                    level_2 = True
-                    level_1 = False
                     finish = False
+
+
+
 
                     spritelist = sprite.spritecollide(player, enemys, False)
                     for collide in spritelist:
                         finish = True
 
-
-
-
-
-
-
-
-
+        if level == 2:
+            rand_speed = randint(20, 30)
 
 
 
@@ -150,44 +139,33 @@ def start():
 
 
 def random_car():
-
+    global rand_speed
+    rand_speed = randint(5, 10)
 
     rand_race = randint(1, 4)
     rand_y = randint(-200, -20)
 
     enemy_image = choice(enemy_images)
-    if level_1 == True:
 
-        rand_speed = randint(5, 8)
-        if rand_race == 1:
-            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 2:
-            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 3:
-            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 4:
-            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
-            enemys.add(enemy)
+    if rand_race == 1:
+        enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 2:
+        enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 3:
+        enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+        enemys.add(enemy)
+    if rand_race == 4:
+        enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+        enemys.add(enemy)
 
 
-    if level_2 == True:
 
-        rand_speed = randint(10, 14)
-        if rand_race == 1:
-            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 2:
-            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 3:
-            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
-            enemys.add(enemy)
-        if rand_race == 4:
-            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
-            enemys.add(enemy)
+
+
+
+
 
 
 
@@ -212,10 +190,8 @@ lost = 0
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
-level_1 = False
-finish = False
-level_2 = False
 
+finish = False
 
 
 clock = time.Clock()
@@ -226,30 +202,31 @@ font1 = font.SysFont("Aril", 35)
 
 menu = True
 
-while menu:
-    for e in event.get():
-        if e.type == QUIT:
-
-
-            level_1 = True
-            menu = False
+#while menu:
+    #for e in event.get():
+        #if e.type == QUIT:
 
 
 
-    window.blit(bg, (0, 0))
+
+            #menu = False
 
 
-    display.update()
-    clock.tick(FPS)
+
+
+    #window.blit(bg, (0, 0))
+
+
+    #display.update()
+    #clock.tick(FPS)
 
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
-while level_1:
+level = 1
+while level < 5:
     start()
 
 
 
 
 
-while level_2:
-    start()
