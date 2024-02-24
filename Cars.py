@@ -70,7 +70,80 @@ class Menu():
 
 
 
+def start():
+    global start_time1
+    global level_1
+    global level_2
+    global start_time
+    global rand_interval
+    global finish
+    for e in event.get():
+        if e.type == QUIT:
+            level_1 = False
+            level_2 = False
+    if not finish:
 
+        if time.get_ticks() - start_time > rand_interval:
+            random_car()
+            start_time = time.get_ticks()
+            rand_interval = randint(1000, 3000)
+        time_tick = (time.get_ticks() - start_time1) / 1000
+
+
+
+
+
+
+
+
+
+        spritelist = sprite.spritecollide(player,enemys, False)
+        for collide in spritelist:
+            finish = True
+        if level_1 == True:
+            if time_tick > 10:
+                time_tick = 0
+                start_time1 = 0
+                time_tick = (time.get_ticks() - start_time1) / 1000
+
+
+                finish = True
+
+                if finish == True:
+
+
+                    level_2 = True
+                    level_1 = False
+                    finish = False
+
+                    spritelist = sprite.spritecollide(player, enemys, False)
+                    for collide in spritelist:
+                        finish = True
+
+
+
+
+
+
+
+
+
+
+
+
+        window.blit(bg, (0, 0))
+
+        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
+        window.blit(txt_time, (30, 30))
+        player.draw()
+        enemys.draw(window)
+
+        player.update()
+        enemys.update()
+
+
+    display.update()
+    clock.tick(FPS)
 
 
 
@@ -81,20 +154,42 @@ def random_car():
 
     rand_race = randint(1, 4)
     rand_y = randint(-200, -20)
-    rand_speed = randint(10, 15)
+
     enemy_image = choice(enemy_images)
-    if rand_race == 1:
-        enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
-        enemys.add(enemy)
-    if rand_race == 2:
-        enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
-        enemys.add(enemy)
-    if rand_race == 3:
-        enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
-        enemys.add(enemy)
-    if rand_race == 4:
-        enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
-        enemys.add(enemy)
+    if level_1 == True:
+
+        rand_speed = randint(5, 8)
+        if rand_race == 1:
+            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 2:
+            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 3:
+            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 4:
+            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+            enemys.add(enemy)
+
+
+    if level_2 == True:
+
+        rand_speed = randint(10, 14)
+        if rand_race == 1:
+            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 2:
+            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 3:
+            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 4:
+            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+            enemys.add(enemy)
+
+
 
 
 
@@ -117,8 +212,9 @@ lost = 0
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
-game = False
+level_1 = False
 finish = False
+level_2 = False
 
 
 
@@ -133,6 +229,9 @@ menu = True
 while menu:
     for e in event.get():
         if e.type == QUIT:
+
+
+            level_1 = True
             menu = False
 
 
@@ -145,36 +244,12 @@ while menu:
 
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
-while game:
-
-    for e in event.get():
-        if e.type == QUIT:
-            game = False
-    if not finish:
-        if time.get_ticks() - start_time > rand_interval:
-            random_car()
-            start_time = time.get_ticks()
-            rand_interval = randint(1000, 3000)
-        time_tick = (time.get_ticks() - start_time1) / 1000
+while level_1:
+    start()
 
 
 
-        spritelist = sprite.spritecollide(player,enemys, False)
-        for collide in spritelist:
-            finish = True
-        if time_tick > 10:
-            finish = True
-
-        window.blit(bg, (0, 0))
-
-        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
-        window.blit(txt_time, (30, 30))
-        player.draw()
-        enemys.draw(window)
-
-        player.update()
-        enemys.update()
 
 
-    display.update()
-    clock.tick(FPS)
+while level_2:
+    start()
