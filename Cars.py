@@ -5,7 +5,7 @@ from random import randint, choice
 import os
 import sys
 
-
+level = 1
 
 init()
 font.init()
@@ -97,7 +97,7 @@ def start():
             finish = True
 
             if time_tick > 10:
-                level + 1
+                level =+ 1
                 time_tick = 0
                 start_time1 = 0
                 time_tick = (time.get_ticks() - start_time1) / 1000
@@ -105,15 +105,10 @@ def start():
 
 
 
-                if finish == True:
-                    finish = False
 
-
-
-
-                    spritelist = sprite.spritecollide(player, enemys, False)
-                    for collide in spritelist:
-                        finish = True
+                spritelist = sprite.spritecollide(player, enemys, False)
+                for collide in spritelist:
+                    finish = True
 
         if level == 2:
             rand_speed = randint(20, 30)
@@ -140,6 +135,10 @@ def start():
 
 def random_car():
     global rand_speed
+    global level
+
+
+
     rand_speed = randint(5, 10)
 
     rand_race = randint(1, 4)
