@@ -70,64 +70,6 @@ class Menu():
 
 
 
-def start():
-    global rand_speed
-    global start_time1
-    global level
-    global start_time
-    global rand_interval
-    global finish
-
-
-    for e in event.get():
-        if e.type == QUIT:
-            finish = True
-    if not finish:
-
-
-        if time.get_ticks() - start_time > rand_interval:
-            random_car()
-            start_time = time.get_ticks()
-            rand_interval = randint(1000, 3000)
-        time_tick = (time.get_ticks() - start_time1) / 1000
-
-
-        spritelist = sprite.spritecollide(player,enemys, False)
-        for collide in spritelist:
-            finish = True
-
-            if time_tick > 10:
-                level =+ 1
-                time_tick = 0
-                start_time1 = 0
-                time_tick = (time.get_ticks() - start_time1) / 1000
-
-
-
-
-
-                spritelist = sprite.spritecollide(player, enemys, False)
-                for collide in spritelist:
-                    finish = True
-
-        if level == 2:
-            rand_speed = randint(20, 30)
-
-
-
-        window.blit(bg, (0, 0))
-
-        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
-        window.blit(txt_time, (30, 30))
-        player.draw()
-        enemys.draw(window)
-
-        player.update()
-        enemys.update()
-
-
-    display.update()
-    clock.tick(FPS)
 
 
 
@@ -136,10 +78,23 @@ def start():
 def random_car():
     global rand_speed
     global level
+    global rand_interval
 
+    if level == 2:
+        rand_speed = randint(10, 15)
+        rand_interval = randint(1000, 2000)
 
+    elif level == 1:
+        rand_speed = randint(5, 10)
+        rand_interval = randint(1000, 3000)
+    if level == 3:
+        rand_speed = randint(15, 20)
+        rand_interval = randint(500, 2000)
 
-    rand_speed = randint(5, 10)
+    elif level == 4:
+        rand_speed = randint(25, 30)
+        rand_interval = randint(500, 1500)
+
 
     rand_race = randint(1, 4)
     rand_y = randint(-200, -20)
@@ -158,12 +113,6 @@ def random_car():
     if rand_race == 4:
         enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
         enemys.add(enemy)
-
-
-
-
-
-
 
 
 
@@ -198,14 +147,16 @@ random_car()
 
 rand_interval = randint(1000, 3000)
 font1 = font.SysFont("Aril", 35)
+font2 = font.SysFont('Aril', 25)
 
 menu = True
 
 #while menu:
+
     #for e in event.get():
         #if e.type == QUIT:
 
-
+            #level = 1
 
 
             #menu = False
@@ -221,9 +172,55 @@ menu = True
 
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
-level = 1
+level = int(1)
 while level < 5:
-    start()
+
+    for e in event.get():
+        if e.type == QUIT:
+
+            level = 6
+    if not finish:
+
+        if time.get_ticks() - start_time > rand_interval:
+            random_car()
+            start_time = time.get_ticks()
+
+
+        time_tick = (time.get_ticks() - start_time1) / 1000
+
+        spritelist = sprite.spritecollide(player, enemys, False)
+        for collide in spritelist:
+            finish = True
+        if time_tick > 10 and level == 1:
+            level += 1
+
+            print(level)
+        if time_tick > 20 and level == 2:
+            level += 1
+            print(level)
+        if time_tick > 30 and level == 3:
+            level += 1
+            print(level)
+        if time_tick > 40 and level == 4:
+            level += 1
+            print(level)
+
+
+
+        window.blit(bg, (0, 0))
+        txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
+        window.blit(txt_level, (40, 60))
+
+        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
+        window.blit(txt_time, (30, 30))
+        player.draw()
+        enemys.draw(window)
+
+        player.update()
+        enemys.update()
+
+        display.update()
+        clock.tick(FPS)
 
 
 
