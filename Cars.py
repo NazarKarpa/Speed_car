@@ -148,6 +148,10 @@ random_car()
 rand_interval = randint(1000, 3000)
 font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
+font3 = font.SysFont('Aril', 104)
+
+txt_lose_game = font3.render("You lose", True, (255, 0, 0))
+txt_win_game = font3.render('You win', True, (0, 255, 0))
 
 menu = True
 
@@ -173,13 +177,17 @@ menu = True
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
 level = int(1)
-while level < 5:
+while level < 6:
+
 
     for e in event.get():
         if e.type == QUIT:
 
             level = 6
     if not finish:
+        window.blit(bg, (0, 0))
+
+
 
         if time.get_ticks() - start_time > rand_interval:
             random_car()
@@ -190,24 +198,32 @@ while level < 5:
 
         spritelist = sprite.spritecollide(player, enemys, False)
         for collide in spritelist:
+            window.blit(txt_lose_game, (280,260))
             finish = True
         if time_tick > 10 and level == 1:
+
             level += 1
 
             print(level)
         if time_tick > 20 and level == 2:
             level += 1
             print(level)
+
         if time_tick > 30 and level == 3:
             level += 1
             print(level)
         if time_tick > 40 and level == 4:
+
             level += 1
             print(level)
+        if level == 5:
+            window.blit(txt_win_game, (280, 260))
+            finish = True
 
 
 
-        window.blit(bg, (0, 0))
+
+
         txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
         window.blit(txt_level, (40, 60))
 
@@ -219,8 +235,8 @@ while level < 5:
         player.update()
         enemys.update()
 
-        display.update()
-        clock.tick(FPS)
+    display.update()
+    clock.tick(FPS)
 
 
 
