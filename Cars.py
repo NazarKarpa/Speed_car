@@ -17,6 +17,8 @@ bg_image = image.load('background-1.png')
 
 player_image1 = image.load('car-truck1.png')
 
+bost_image = image.load('boostmega-removebg-preview.png')
+
 enemy_image1 = image.load('car-truck2.png')
 enemy_image2 = image.load('car-truck4.png')
 enemy_image3 = image.load('car-truck5.png')
@@ -94,6 +96,9 @@ def random_car():
     elif level == 4:
         rand_speed = randint(25, 30)
         rand_interval = randint(500, 1500)
+    elif level == 5:
+        rand_speed = randint(30, 35)
+        rand_interval = randint(500, 1000)
 
 
     rand_race = randint(1, 4)
@@ -103,6 +108,7 @@ def random_car():
 
     if rand_race == 1:
         enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+
         enemys.add(enemy)
     if rand_race == 2:
         enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
@@ -114,14 +120,26 @@ def random_car():
         enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
         enemys.add(enemy)
 
+bostery = sprite.Group()
 
+def random_booster():
 
+    rand_speeded = randint(3, 10)
+    rand_race = randint(1, 4)
+    rand_y = randint(-200, -20)
 
-
-
-
-
-
+    if rand_race == 1:
+        boost = Enemy(bost_image, 50, 100, 210, rand_y, rand_speeded)
+        bostery.add(boost)
+    if rand_race == 2:
+        boost = Enemy(bost_image, 50, 100, 350, rand_y, rand_speeded)
+        bostery.add(boost)
+    if rand_race == 3:
+        boost = Enemy(bost_image, 50, 100, 500, rand_y, rand_speeded)
+        bostery.add(boost)
+    if rand_race == 4:
+        boost = Enemy(bost_image, 50, 100, 630, rand_y, rand_speeded)
+        bostery.add(bostery)
 
 
 window = display.set_mode((WIDTH, HEIGHT))
@@ -144,7 +162,7 @@ finish = False
 
 clock = time.Clock()
 random_car()
-
+rand_intervaled  = randint(500, 20000)
 rand_interval = randint(1000, 3000)
 font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
@@ -173,17 +191,19 @@ menu = True
 
     #display.update()
     #clock.tick(FPS)
-
+start_time2 = time.get_ticks()
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
 level = int(1)
-while level < 6:
+while level < 7:
+
+
 
 
     for e in event.get():
         if e.type == QUIT:
 
-            level = 6
+            level = 8
     if not finish:
         window.blit(bg, (0, 0))
 
@@ -194,12 +214,20 @@ while level < 6:
             start_time = time.get_ticks()
 
 
+
         time_tick = (time.get_ticks() - start_time1) / 1000
 
+        if time.get_ticks() - start_time2 > rand_intervaled:
+            random_booster()
+            start_time2 = time.get_ticks()
+
         spritelist = sprite.spritecollide(player, enemys, False)
+        spritelist_boost = sprite.spritecollide(player, bostery, False)
         for collide in spritelist:
             window.blit(txt_lose_game, (280,260))
             finish = True
+        for collide in spritelist_boost:
+            player.speed += 0.1
         if time_tick > 10 and level == 1:
 
             level += 1
@@ -213,11 +241,12 @@ while level < 6:
             level += 1
             print(level)
         if time_tick > 40 and level == 4:
-
             level += 1
             print(level)
-        if level == 5:
-            window.blit(txt_win_game, (280, 260))
+        if time_tick > 45 and level == 5:
+            level += 1
+        if level == 6:
+            window.blit(txt_win_game, (280,260))
             finish = True
 
 
@@ -229,11 +258,15 @@ while level < 6:
 
         txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
         window.blit(txt_time, (30, 30))
+
         player.draw()
         enemys.draw(window)
+        bostery.draw(window)
+
 
         player.update()
         enemys.update()
+        bostery.update()
 
     display.update()
     clock.tick(FPS)
