@@ -34,7 +34,7 @@ enemy_image3 = image.load('car-truck5.png')
 
 menu_bg = image.load('background-1.png')
 
-button_play = image.load('PlayButton.png')
+button_play_img = image.load('PlayButton.png')
 
 enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 
@@ -82,8 +82,9 @@ class Enemy(GameSprite):
             self.rect.y += self.speed
 
 
-class Menu():
+class Menu(GameSprite):
     pass
+
 
 
 
@@ -228,6 +229,7 @@ enemys = sprite.Group()
 lost = 0
 
 
+button_play = Menu(button_play_img, 100, 200, 200, 400, 1)
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
@@ -264,108 +266,116 @@ while level < 7:
 
 
 
-    for e in event.get():
-        if e.type == QUIT:
 
-            level = 8
-    if not finish:
-        if bg_y1 > 600:
-            bg_y1 = -600
+    if menu == True:
+        window.blit(bg, (0, 0))
+        for e in event.get():
+            if e.type == QUIT:
+                menu = False
+        button_play.draw()
+        button_play.update()
+    else:
+        for e in event.get():
+            if e.type == QUIT:
+                level = 8
+        if not finish:
+            if bg_y1 > 600:
+                bg_y1 = -600
 
-        if bg_y2 > 600:
-            bg_y2 = -600
-        window.blit(bg, (0, bg_y1))
+            if bg_y2 > 600:
+                bg_y2 = -600
+            window.blit(bg, (0, bg_y1))
 
-        bg_y1 += bg_speed
-        window.blit(bg, (0, bg_y2))
-        bg_y2 += bg_speed
-
-
-
-        if time.get_ticks() - start_time > rand_interval:
-            random_car()
-            start_time = time.get_ticks()
-
-
-        if time.get_ticks() - start_time3 > rand_interval_spike:
-            random_spike()
-            start_time3 = time.get_ticks()
-
-        if time.get_ticks() - start_time4 > rand_interval_coin:
-            random_coin()
-            start_time4 = time.get_ticks()
-
-        time_tick = (time.get_ticks() - start_time1) / 1000
-
-        if time.get_ticks() - start_time2 > rand_intervaled:
-            random_booster()
-            start_time2 = time.get_ticks()
-
-        spritelist = sprite.spritecollide(player, enemys, False)
-        spritelist_boost = sprite.spritecollide(player, bostery, False)
-        sprite_list_spike = sprite.spritecollide(player, spike_group, False)
-        spritelist_coin = sprite.spritecollide(player, coin_group, False)
-        for collide in spritelist_coin:
-            coin_group.empty()
-            coin_record += 1
-
-            print(coin_record)
-        for collide in sprite_list_spike:
-            window.blit(txt_lose_game, (280,260))
-            finish = True
-        for collide in spritelist:
-            window.blit(txt_lose_game, (280,260))
-            finish = True
-        for collide in spritelist_boost:
-            player.speed += 0.1
-        if time_tick > 10 and level == 1:
+            bg_y1 += bg_speed
+            window.blit(bg, (0, bg_y2))
+            bg_y2 += bg_speed
 
 
-            bg_speed += 2
-            level += 1
 
-            print(level)
-        if time_tick > 20 and level == 2:
-            bg_speed += 2
-            level += 1
-            print(level)
-
-        if time_tick > 30 and level == 3:
-            bg_speed += 2
-            level += 1
-            print(level)
-        if time_tick > 40 and level == 4:
-            bg_speed += 2
-            level += 1
-            print(level)
-        if time_tick > 45 and level == 5:
-            bg_speed = 9
-            level += 1
-        if level == 6:
-            window.blit(txt_win_game, (280,260))
-            finish = True
-
-        txt_coin = font2.render(f"Очки: {coin_record}", True, (201, 200, 100))
-        window.blit(txt_coin, (30, 90))
+            if time.get_ticks() - start_time > rand_interval:
+                random_car()
+                start_time = time.get_ticks()
 
 
-        txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
-        window.blit(txt_level, (40, 60))
+            if time.get_ticks() - start_time3 > rand_interval_spike:
+                random_spike()
+                start_time3 = time.get_ticks()
 
-        txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
-        window.blit(txt_time, (30, 30))
+            if time.get_ticks() - start_time4 > rand_interval_coin:
+                random_coin()
+                start_time4 = time.get_ticks()
 
-        player.draw()
-        enemys.draw(window)
-        bostery.draw(window)
-        spike_group.draw(window)
-        coin_group.draw(window)
+            time_tick = (time.get_ticks() - start_time1) / 1000
 
-        player.update()
-        enemys.update()
-        bostery.update()
-        spike_group.update()
-        coin_group.update()
+            if time.get_ticks() - start_time2 > rand_intervaled:
+                random_booster()
+                start_time2 = time.get_ticks()
+
+            spritelist = sprite.spritecollide(player, enemys, False)
+            spritelist_boost = sprite.spritecollide(player, bostery, False)
+            sprite_list_spike = sprite.spritecollide(player, spike_group, False)
+            spritelist_coin = sprite.spritecollide(player, coin_group, False)
+            for collide in spritelist_coin:
+                coin_group.empty()
+                coin_record += 1
+
+                print(coin_record)
+            for collide in sprite_list_spike:
+                window.blit(txt_lose_game, (280,260))
+                finish = True
+            for collide in spritelist:
+                window.blit(txt_lose_game, (280,260))
+                finish = True
+            for collide in spritelist_boost:
+                player.speed += 0.1
+            if time_tick > 10 and level == 1:
+
+
+                bg_speed += 2
+                level += 1
+
+                print(level)
+            if time_tick > 20 and level == 2:
+                bg_speed += 2
+                level += 1
+                print(level)
+
+            if time_tick > 30 and level == 3:
+                bg_speed += 2
+                level += 1
+                print(level)
+            if time_tick > 40 and level == 4:
+                bg_speed += 2
+                level += 1
+                print(level)
+            if time_tick > 45 and level == 5:
+                bg_speed = 9
+                level += 1
+            if level == 6:
+                window.blit(txt_win_game, (280,260))
+                finish = True
+
+            txt_coin = font2.render(f"Очки: {coin_record}", True, (201, 200, 100))
+            window.blit(txt_coin, (30, 90))
+
+
+            txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
+            window.blit(txt_level, (40, 60))
+
+            txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
+            window.blit(txt_time, (30, 30))
+
+            player.draw()
+            enemys.draw(window)
+            bostery.draw(window)
+            spike_group.draw(window)
+            coin_group.draw(window)
+
+            player.update()
+            enemys.update()
+            bostery.update()
+            spike_group.update()
+            coin_group.update()
 
     display.update()
     clock.tick(FPS)
