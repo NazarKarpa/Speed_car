@@ -36,6 +36,8 @@ menu_bg = image.load('background-1.png')
 
 button_play_img = image.load('PlayButton.png')
 
+button_exit_img = image.load('Quit_button-removebg-preview.png')
+
 enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 
 font_meny = font.SysFont('arial', 50)
@@ -219,6 +221,8 @@ def random_spike():
 
 window = display.set_mode((WIDTH, HEIGHT))
 
+
+
 bg = transform.scale(bg_image, (WIDTH, HEIGHT))
 
 coin_group = sprite.Group()
@@ -229,7 +233,10 @@ enemys = sprite.Group()
 lost = 0
 
 
-button_play = Menu(button_play_img, 100, 200, 200, 400, 1)
+button_play = Menu(button_play_img, 300, 200, 300, 100, 1)
+
+
+button_QUIT = Menu(button_exit_img, 250, 150, 330, 350, 1)
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
@@ -242,7 +249,7 @@ random_car()
 rand_intervaled = randint(500, 20000)
 rand_interval = randint(1000, 3000)
 rand_interval_spike = randint(1000, 10000)
-rand_interval_coin = randint(1000, 5000)
+rand_interval_coin = randint(1000, 9000)
 font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
 font3 = font.SysFont('Aril', 104)
@@ -253,11 +260,13 @@ level = int(1)
 menu = True
 
 
+
 start_time4 = time.get_ticks()
 start_time3 = time.get_ticks()
 start_time2 = time.get_ticks()
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
+
 bg_y1 = 0
 bg_y2 = -600
 bg_speed = 3
@@ -270,15 +279,37 @@ while level < 7:
     if menu == True:
         window.blit(bg, (0, 0))
         for e in event.get():
+            if e.type == MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                print(mouse_y, mouse_x)
+                if mouse_x <= 553 and mouse_y <= 232 and mouse_x > 358 and mouse_y > 136:
+                    menu = False
+                    finish = False
+
+                if mouse_x <= 559 and mouse_y <= 481 and mouse_x > 353 and mouse_y > 364:
+                    menu = False
+                    level = 8
+
             if e.type == QUIT:
                 menu = False
+                level = 8
+
+
+        button_QUIT.draw()
         button_play.draw()
+        button_QUIT.update()
         button_play.update()
     else:
         for e in event.get():
             if e.type == QUIT:
                 level = 8
+            if e.type == KEYDOWN:
+                if e.key == K_ESCAPE and level <= 6:
+
+                    menu = True
+                    finish = True
         if not finish:
+
             if bg_y1 > 600:
                 bg_y1 = -600
 
