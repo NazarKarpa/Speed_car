@@ -4,8 +4,10 @@ import pygame.locals
 from pygame import *
 from random import randint, choice
 
+
 import os
 import sys
+
 
 coin_record = 0
 
@@ -246,7 +248,7 @@ finish = False
 
 clock = time.Clock()
 random_car()
-rand_intervaled = randint(500, 20000)
+rand_intervaled = randint(500, 30000)
 rand_interval = randint(1000, 3000)
 rand_interval_spike = randint(1000, 10000)
 rand_interval_coin = randint(1000, 9000)
@@ -259,6 +261,8 @@ txt_win_game = font3.render('You win', True, (0, 255, 0))
 level = int(1)
 menu = True
 
+frames = 0
+timer = 0
 
 
 start_time4 = time.get_ticks()
@@ -308,7 +312,14 @@ while level < 7:
 
                     menu = True
                     finish = True
+
         if not finish:
+            with open('Record.txt', 'r') as f:
+                coin_record = int(f.readline())
+            frames += 1
+            if frames >=60:
+                timer+=1
+                frames=0
 
             if bg_y1 > 600:
                 bg_y1 = -600
@@ -347,8 +358,12 @@ while level < 7:
             sprite_list_spike = sprite.spritecollide(player, spike_group, False)
             spritelist_coin = sprite.spritecollide(player, coin_group, False)
             for collide in spritelist_coin:
-                coin_group.empty()
                 coin_record += 1
+                with open('Record.txt', 'w') as f:
+                        f.write(str(coin_record))
+
+                coin_group.empty()
+
 
                 print(coin_record)
             for collide in sprite_list_spike:
@@ -359,27 +374,27 @@ while level < 7:
                 finish = True
             for collide in spritelist_boost:
                 player.speed += 0.1
-            if time_tick > 10 and level == 1:
+            if timer > 10 and level == 1:
 
 
                 bg_speed += 2
                 level += 1
 
                 print(level)
-            if time_tick > 20 and level == 2:
+            if timer > 20 and level == 2:
                 bg_speed += 2
                 level += 1
                 print(level)
 
-            if time_tick > 30 and level == 3:
+            if timer > 30 and level == 3:
                 bg_speed += 2
                 level += 1
                 print(level)
-            if time_tick > 40 and level == 4:
+            if timer > 40 and level == 4:
                 bg_speed += 2
                 level += 1
                 print(level)
-            if time_tick > 45 and level == 5:
+            if timer > 45 and level == 5:
                 bg_speed = 9
                 level += 1
             if level == 6:
@@ -393,7 +408,7 @@ while level < 7:
             txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
             window.blit(txt_level, (40, 60))
 
-            txt_time = font1.render(f"Час: {time_tick}", True, (200, 200, 100))
+            txt_time = font1.render(f"Час: {timer}", True, (200, 200, 100))
             window.blit(txt_time, (30, 30))
 
             player.draw()
