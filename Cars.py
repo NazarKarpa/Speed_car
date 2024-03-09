@@ -11,6 +11,9 @@ import sys
 
 coin_record = 0
 
+price_car1 = 5
+price_car2 = 15
+
 level = 1
 
 init()
@@ -23,6 +26,11 @@ bg_image = image.load('background-1.png')
 
 image_shop = image.load('test_128x128_7.png')
 
+buy_png = image.load('pngtree-buy-now-png-image_3165728-removebg-preview.png')
+sold_png = image.load('sales-stock-photography-rubber-stamp-postage-stamps-sold-out-removebg-preview.png')
+
+player_image2= image.load('car-truck2 — копия.png.')
+player_image2 = transform.scale(player_image2, (50, 80))
 player_image1 = image.load('car-truck1.png')
 player_image1 = transform.scale(player_image1, (50, 80))
 
@@ -48,8 +56,8 @@ enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 
 font_meny = font.SysFont('arial', 50)
 
-mixer.music.load('run car.mp3')
-mixer.music.set_volume(0.4)
+crash_sound = mixer.Sound('ar crashed.mp3')
+
 
 
 class GameSprite(sprite.Sprite):
@@ -185,6 +193,10 @@ def random_coin():
         coin_group.add(coin)
 
 
+def coins():
+    global coin_record
+    with open('Record.txt', 'r') as f:
+        coin_record = int(f.readline())
 
 def random_spike():
     global bg_speed
@@ -241,9 +253,20 @@ lost = 0
 
 button_play = Menu(button_play_img, 300, 200, 300, 50, 1)
 
+
+
+button_buy = Menu(buy_png, 120, 120, 20, 350, 1)
+
+button_buy2 = Menu(buy_png, 120, 120, 180, 350, 1)
+
+sould_button = Menu(sold_png, 200, 200, 0, 150, 1)
+
 button_shop = Menu(shop, 210, 180, 350, 220, 1)
 
 button_QUIT = Menu(button_exit_img, 250, 150, 330, 450, 1)
+
+player_image_shop2 = Menu(player_image2, 90, 120, 200, 200, 1)
+player_image_shop1 = Menu(player_image1, 90, 120, 40, 200, 1)
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
@@ -252,7 +275,7 @@ finish = False
 
 
 clock = time.Clock()
-random_car()
+
 rand_intervaled = randint(500, 30000)
 rand_interval = randint(1000, 3000)
 rand_interval_spike = randint(1000, 10000)
@@ -276,6 +299,9 @@ start_time2 = time.get_ticks()
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
 
+b = 0
+a = False
+
 bg_y1 = 0
 bg_y2 = -600
 bg_speed = 3
@@ -287,18 +313,50 @@ while level < 7:
 
     if menu == True:
         window.blit(bg, (0, 0))
+        if b == 1:
+
+            window.blit(bg_shop, (0, 0))
+            coins()
+
+            for e in event.get():
+                if e.type == KEYDOWN:
+                    if e.key == K_SPACE:
+                        b = 0
+                elif e.type == MOUSEBUTTONDOWN:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print(mouse_y, '-y', mouse_x, '-x')
+                    if mouse_x <= 140 and mouse_y < 428 and mouse_x > 20 and mouse_y > 390:
+                        a = True
+                        print('popad')
+                        sould_button.draw()
+                        sould_button.update()
+
+            txt_coin = font2.render(f"Ціна: {price_car1}", True, (201, 200, 100))
+            window.blit(txt_coin, (50, 350))
+            txt_coin = font4.render(f"Очки: {coin_record}", True, (201, 200, 100))
+            window.blit(txt_coin, (50, 10))
+            player_image_shop2.draw()
+            player_image_shop1.draw()
+            button_buy2.draw()
+            button_buy.draw()
+            button_buy.update()
+            button_buy2.update()
+            player_image_shop2.update()
+            player_image_shop1.update()
+
+
         for e in event.get():
             if e.type == MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                print(mouse_y, '-y', mouse_x, '-x')
+
                 if mouse_x <= 553 and mouse_y <= 182 and mouse_x > 358 and mouse_y > 50:
                     menu = False
                     finish = False
 
                 elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
-
+                    b +=1
                     print('button')
-                    window.blit(bg_shop, (0, 0))
+
 
 
 
@@ -310,13 +368,19 @@ while level < 7:
                 menu = False
                 level = 8
 
+        if b < 1:
+            window.blit(bg, (0, 0))
+            button_QUIT.draw()
+            button_shop.draw()
+            button_play.draw()
+            button_QUIT.update()
+            button_shop.update()
+            button_play.update()
+        if a == True:
+            sould_button.draw()
+            sould_button.update()
 
-        button_QUIT.draw()
-        button_shop.draw()
-        button_play.draw()
-        button_QUIT.update()
-        button_shop.update()
-        button_play.update()
+
     else:
         for e in event.get():
             if e.type == QUIT:
@@ -328,8 +392,7 @@ while level < 7:
                     finish = True
 
         if not finish:
-            with open('Record.txt', 'r') as f:
-                coin_record = int(f.readline())
+            coins()
             frames += 1
             if frames >=60:
                 timer+=1
@@ -384,10 +447,13 @@ while level < 7:
                 window.blit(txt_lose_game, (280,260))
                 finish = True
             for collide in spritelist:
+                crash_sound.play()
                 window.blit(txt_lose_game, (280,260))
                 finish = True
             for collide in spritelist_boost:
+
                 player.speed += 0.1
+                bostery.empty()
             if timer > 10 and level == 1:
 
 
@@ -414,7 +480,7 @@ while level < 7:
             if level == 6:
                 window.blit(txt_win_game, (280,260))
                 finish = True
-
+            coins()
             txt_coin = font2.render(f"Очки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (30, 90))
 
