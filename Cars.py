@@ -326,7 +326,16 @@ while level < 7:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     print(mouse_y, '-y', mouse_x, '-x')
                     if mouse_x <= 140 and mouse_y < 428 and mouse_x > 20 and mouse_y > 390:
-                        a = True
+
+                        if coin_record > 5:
+                            with open('Record.txt', 'w') as f:
+                                coin_record -= 5
+                                f.write(str(coin_record))
+
+                                a = True
+                        else:
+                            a = False
+
                         print('popad')
                         sould_button.draw()
                         sould_button.update()
@@ -354,6 +363,7 @@ while level < 7:
                     finish = False
 
                 elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
+
                     b +=1
                     print('button')
 
