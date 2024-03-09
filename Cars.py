@@ -21,10 +21,14 @@ WIDTH, HEIGHT = 900,600
 
 bg_image = image.load('background-1.png')
 
+image_shop = image.load('test_128x128_7.png')
+
 player_image1 = image.load('car-truck1.png')
 player_image1 = transform.scale(player_image1, (50, 80))
 
 spike_image = image.load('small_metal_spike.png')
+
+shop = image.load('2D shop.png')
 
 coin_image = image.load('coin_01.png')
 
@@ -224,7 +228,7 @@ def random_spike():
 window = display.set_mode((WIDTH, HEIGHT))
 
 
-
+bg_shop = transform.scale(image_shop, (WIDTH, HEIGHT))
 bg = transform.scale(bg_image, (WIDTH, HEIGHT))
 
 coin_group = sprite.Group()
@@ -235,10 +239,11 @@ enemys = sprite.Group()
 lost = 0
 
 
-button_play = Menu(button_play_img, 300, 200, 300, 100, 1)
+button_play = Menu(button_play_img, 300, 200, 300, 50, 1)
 
+button_shop = Menu(shop, 210, 180, 350, 220, 1)
 
-button_QUIT = Menu(button_exit_img, 250, 150, 330, 350, 1)
+button_QUIT = Menu(button_exit_img, 250, 150, 330, 450, 1)
 
 player = Player(player_image1, 50, 80, 200, HEIGHT - 150, 7)
 FPS = 60
@@ -285,12 +290,19 @@ while level < 7:
         for e in event.get():
             if e.type == MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                print(mouse_y, mouse_x)
-                if mouse_x <= 553 and mouse_y <= 232 and mouse_x > 358 and mouse_y > 136:
+                print(mouse_y, '-y', mouse_x, '-x')
+                if mouse_x <= 553 and mouse_y <= 182 and mouse_x > 358 and mouse_y > 50:
                     menu = False
                     finish = False
 
-                if mouse_x <= 559 and mouse_y <= 481 and mouse_x > 353 and mouse_y > 364:
+                elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
+
+                    print('button')
+                    window.blit(bg_shop, (0, 0))
+
+
+
+                elif mouse_x <= 559 and mouse_y <= 581 and mouse_x > 353 and mouse_y > 464:
                     menu = False
                     level = 8
 
@@ -300,8 +312,10 @@ while level < 7:
 
 
         button_QUIT.draw()
+        button_shop.draw()
         button_play.draw()
         button_QUIT.update()
+        button_shop.update()
         button_play.update()
     else:
         for e in event.get():
