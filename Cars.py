@@ -397,10 +397,12 @@ while level < 7:
                     'старт'
                     menu = False
                     finish = False
+                    timer = 0
+                    level = 1
 
                 elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
                     'Кнопка магазу'
-                    b +=1
+                    b += 1
                     print('button')
 
 
@@ -428,9 +430,6 @@ while level < 7:
         if if_buy2 == True and b == 1:
             sould_button2.draw()
             sould_button2.update()
-
-
-
 
     else:
         for e in event.get():
@@ -485,48 +484,54 @@ while level < 7:
             spritelist_boost = sprite.spritecollide(player, bostery, False)
             sprite_list_spike = sprite.spritecollide(player, spike_group, False)
             spritelist_coin = sprite.spritecollide(player, coin_group, False)
+
             for collide in spritelist_coin:
                 coin_record += 1
                 with open('Record.txt', 'w') as f:
                         f.write(str(coin_record))
 
                 coin_group.empty()
-
-
                 print(coin_record)
+
             for collide in sprite_list_spike:
                 window.blit(txt_lose_game, (280,260))
                 finish = True
+
             for collide in spritelist:
                 crash_sound.play()
                 window.blit(txt_lose_game, (280,260))
                 finish = True
+
             for collide in spritelist_boost:
 
                 player.speed += 0.1
                 bostery.empty()
+
+            if timer < 10 and level == 1:
+                bg_speed = 4
+
             if timer > 10 and level == 1:
 
 
-                bg_speed += 2
+                bg_speed = 6
                 level += 1
 
                 print(level)
             if timer > 20 and level == 2:
-                bg_speed += 2
+                bg_speed = 8
                 level += 1
                 print(level)
 
             if timer > 30 and level == 3:
-                bg_speed += 2
+                bg_speed = 10
                 level += 1
                 print(level)
             if timer > 40 and level == 4:
-                bg_speed += 2
+                bg_speed = 12
                 level += 1
                 print(level)
             if timer > 45 and level == 5:
-                bg_speed = 9
+                bg_speed = 15
                 level += 1
             if level == 6:
                 window.blit(txt_win_game, (280,260))
@@ -556,8 +561,3 @@ while level < 7:
 
     display.update()
     clock.tick(FPS)
-
-
-
-
-
