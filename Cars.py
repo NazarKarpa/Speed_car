@@ -11,7 +11,7 @@ import sys
 
 coin_record = 0
 
-price_car1 = 5
+price_car1 = 0
 price_car2 = 15
 
 level = 1
@@ -257,9 +257,10 @@ button_play = Menu(button_play_img, 300, 200, 300, 50, 1)
 
 button_buy = Menu(buy_png, 120, 120, 20, 350, 1)
 
-button_buy2 = Menu(buy_png, 120, 120, 180, 350, 1)
+button_buy2 = Menu(buy_png, 120, 120, 185, 350, 1)
 
-sould_button = Menu(sold_png, 200, 200, 0, 150, 1)
+sould_button1 = Menu(sold_png, 200, 200, 0, 150, 1)
+sould_button2 = Menu(sold_png, 200, 200, 160, 150, 1)
 
 button_shop = Menu(shop, 210, 180, 350, 220, 1)
 
@@ -300,7 +301,8 @@ start_time = time.get_ticks()
 start_time1 = time.get_ticks()
 
 b = 0
-a = False
+if_buy1 = False
+if_buy2 = False
 
 bg_y1 = 0
 bg_y2 = -600
@@ -313,57 +315,91 @@ while level < 7:
 
     if menu == True:
         window.blit(bg, (0, 0))
+
         if b == 1:
 
             window.blit(bg_shop, (0, 0))
+
+
             coins()
+
 
             for e in event.get():
                 if e.type == KEYDOWN:
                     if e.key == K_SPACE:
                         b = 0
+
+
                 elif e.type == MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     print(mouse_y, '-y', mouse_x, '-x')
+
+                    if mouse_x <= 300 and mouse_y < 428 and mouse_x > 180 and mouse_y > 390:
+                        '2 knopka'
+                        if coin_record > 15:
+                            if if_buy2 == False:
+                                with open('Record.txt', 'w') as f:
+                                    coin_record -= 15
+                                    f.write(str(coin_record))
+                                    player_image1 = image.load('car-truck2 — копия.png')
+                                    player_image1 = transform.scale(player_image1, (50, 80))
+
+                                    if_buy2 = True
+                            elif if_buy2 == True:
+                                player_image1 = image.load('car-truck2 — копия.png')
+                                player_image1 = transform.scale(player_image1, (50, 80))
+
+
+
+
                     if mouse_x <= 140 and mouse_y < 428 and mouse_x > 20 and mouse_y > 390:
+                        'Провірка покупка прошла ли'
 
-                        if coin_record > 5:
-                            with open('Record.txt', 'w') as f:
-                                coin_record -= 5
-                                f.write(str(coin_record))
+                        player_image1 = image.load('car-truck1.png')
+                        player_image1 = transform.scale(player_image1, (50, 80))
 
-                                a = True
-                        else:
-                            a = False
+
+                        if_buy1 = True
 
                         print('popad')
-                        sould_button.draw()
-                        sould_button.update()
+
 
             txt_coin = font2.render(f"Ціна: {price_car1}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 350))
+
+            txt_coin = font2.render(f"Ціна: {price_car2}", True, (201, 200, 100))
+            window.blit(txt_coin, (210, 350))
+
             txt_coin = font4.render(f"Очки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 10))
+
             player_image_shop2.draw()
             player_image_shop1.draw()
+
             button_buy2.draw()
             button_buy.draw()
+
             button_buy.update()
             button_buy2.update()
+
             player_image_shop2.update()
             player_image_shop1.update()
 
+
+            sould_button1.draw()
+            sould_button1.update()
 
         for e in event.get():
             if e.type == MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
 
                 if mouse_x <= 553 and mouse_y <= 182 and mouse_x > 358 and mouse_y > 50:
+                    'старт'
                     menu = False
                     finish = False
 
                 elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
-
+                    'Кнопка магазу'
                     b +=1
                     print('button')
 
@@ -371,6 +407,7 @@ while level < 7:
 
 
                 elif mouse_x <= 559 and mouse_y <= 581 and mouse_x > 353 and mouse_y > 464:
+                    'Кнопка виходу'
                     menu = False
                     level = 8
 
@@ -386,9 +423,13 @@ while level < 7:
             button_QUIT.update()
             button_shop.update()
             button_play.update()
-        if a == True:
-            sould_button.draw()
-            sould_button.update()
+
+
+        if if_buy2 == True and b == 1:
+            sould_button2.draw()
+            sould_button2.update()
+
+
 
 
     else:
