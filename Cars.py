@@ -496,11 +496,24 @@ while level < 7:
             for collide in sprite_list_spike:
                 window.blit(txt_lose_game, (280,260))
                 finish = True
+                enemys.empty()
+                bostery.empty()
+                coin_group.empty()
+                spike_group.empty()
 
             for collide in spritelist:
                 crash_sound.play()
                 window.blit(txt_lose_game, (280,260))
+
                 finish = True
+
+
+                enemys.empty()
+                bostery.empty()
+                coin_group.empty()
+                spike_group.empty()
+
+
 
             for collide in spritelist_boost:
 
