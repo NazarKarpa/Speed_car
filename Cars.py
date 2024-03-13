@@ -399,6 +399,11 @@ while level < 7:
                     finish = False
                     timer = 0
                     level = 1
+                    enemys.empty()
+                    bostery.empty()
+                    coin_group.empty()
+                    spike_group.empty()
+
 
                 elif mouse_x <= 557 and mouse_y <= 339 and mouse_x > 351 and mouse_y > 222:
                     'Кнопка магазу'
@@ -481,25 +486,22 @@ while level < 7:
                 start_time2 = time.get_ticks()
 
             spritelist = sprite.spritecollide(player, enemys, False)
-            spritelist_boost = sprite.spritecollide(player, bostery, False)
+            spritelist_boost = sprite.spritecollide(player, bostery, True)
             sprite_list_spike = sprite.spritecollide(player, spike_group, False)
-            spritelist_coin = sprite.spritecollide(player, coin_group, False)
+            spritelist_coin = sprite.spritecollide(player, coin_group, True)
 
             for collide in spritelist_coin:
                 coin_record += 1
                 with open('Record.txt', 'w') as f:
                         f.write(str(coin_record))
 
-                coin_group.empty()
+
                 print(coin_record)
 
             for collide in sprite_list_spike:
                 window.blit(txt_lose_game, (280,260))
                 finish = True
-                enemys.empty()
-                bostery.empty()
-                coin_group.empty()
-                spike_group.empty()
+
 
             for collide in spritelist:
                 crash_sound.play()
@@ -508,17 +510,13 @@ while level < 7:
                 finish = True
 
 
-                enemys.empty()
-                bostery.empty()
-                coin_group.empty()
-                spike_group.empty()
 
 
 
             for collide in spritelist_boost:
 
                 player.speed += 0.1
-                bostery.empty()
+
 
             if timer < 10 and level == 1:
                 bg_speed = 4
