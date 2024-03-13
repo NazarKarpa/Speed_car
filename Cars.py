@@ -13,6 +13,7 @@ coin_record = 0
 
 price_car1 = 0
 price_car2 = 15
+price_car3 = 50
 
 level = 1
 
@@ -33,6 +34,10 @@ player_image2= image.load('car-truck2 — копия.png.')
 player_image2 = transform.scale(player_image2, (50, 80))
 player_image1 = image.load('car-truck1.png')
 player_image1 = transform.scale(player_image1, (50, 80))
+player_image3 = image.load('pixel_racecar_green_missiles.png')
+player_image3 = transform.scale(player_image3, (80, 80))
+
+
 
 spike_image = image.load('small_metal_spike.png')
 
@@ -256,16 +261,18 @@ button_play = Menu(button_play_img, 300, 200, 300, 50, 1)
 
 
 button_buy = Menu(buy_png, 120, 120, 20, 350, 1)
-
 button_buy2 = Menu(buy_png, 120, 120, 185, 350, 1)
+button_buy3 = Menu(buy_png, 120, 120, 370, 350, 1)
 
 sould_button1 = Menu(sold_png, 200, 200, 0, 150, 1)
 sould_button2 = Menu(sold_png, 200, 200, 160, 150, 1)
+sould_button3 = Menu(sold_png, 200, 200, 325, 150, 1)
 
 button_shop = Menu(shop, 210, 180, 350, 220, 1)
 
 button_QUIT = Menu(button_exit_img, 250, 150, 330, 450, 1)
 
+player_image_shop3 = Menu(player_image3, 140, 130, 365, 200, 1)
 player_image_shop2 = Menu(player_image2, 90, 120, 200, 200, 1)
 player_image_shop1 = Menu(player_image1, 90, 120, 40, 200, 1)
 
@@ -301,8 +308,10 @@ start_time = time.get_ticks()
 start_time1 = time.get_ticks()
 
 b = 0
+
 if_buy1 = False
 if_buy2 = False
+if_buy3 = False
 
 bg_y1 = 0
 bg_y2 = -600
@@ -335,7 +344,7 @@ while level < 7:
                     print(mouse_y, '-y', mouse_x, '-x')
 
                     if mouse_x <= 300 and mouse_y < 428 and mouse_x > 180 and mouse_y > 390:
-                        '2 knopka'
+
                         if coin_record > 15:
                             if if_buy2 == False:
                                 with open('Record.txt', 'w') as f:
@@ -349,7 +358,20 @@ while level < 7:
                                 player_image1 = image.load('car-truck2 — копия.png')
                                 player_image1 = transform.scale(player_image1, (50, 80))
 
+                    if mouse_x <= 483 and mouse_y < 428 and mouse_x > 372 and mouse_y > 390:
 
+                        if coin_record > 50:
+                            if if_buy3 == False:
+                                with open('Record.txt', 'w') as f:
+                                    coin_record -= 50
+                                    f.write(str(coin_record))
+                                    player_image1 = image.load('pixel_racecar_green_missiles.png')
+                                    player_image1 = transform.scale(player_image1, (80, 80))
+
+                                    if_buy3 = True
+                            elif if_buy3 == True:
+                                player_image1 = image.load('pixel_racecar_green_missiles.png')
+                                player_image1 = transform.scale(player_image1, (80, 80))
 
 
                     if mouse_x <= 140 and mouse_y < 428 and mouse_x > 20 and mouse_y > 390:
@@ -367,21 +389,28 @@ while level < 7:
             txt_coin = font2.render(f"Ціна: {price_car1}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 350))
 
+            txt_coin = font2.render(f"Ціна: {price_car3}", True, (201, 200, 100))
+            window.blit(txt_coin, (400, 350))
+
             txt_coin = font2.render(f"Ціна: {price_car2}", True, (201, 200, 100))
             window.blit(txt_coin, (210, 350))
 
             txt_coin = font4.render(f"Очки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 10))
 
+            player_image_shop3.draw()
             player_image_shop2.draw()
             player_image_shop1.draw()
 
             button_buy2.draw()
             button_buy.draw()
+            button_buy3.draw()
 
             button_buy.update()
             button_buy2.update()
+            button_buy3.update()
 
+            player_image_shop3.update()
             player_image_shop2.update()
             player_image_shop1.update()
 
@@ -436,6 +465,9 @@ while level < 7:
             sould_button2.draw()
             sould_button2.update()
 
+        if if_buy3 == True and b == 1:
+            sould_button3.draw()
+            sould_button3.update()
     else:
         for e in event.get():
             if e.type == QUIT:
