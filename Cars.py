@@ -62,7 +62,10 @@ enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 font_meny = font.SysFont('arial', 50)
 
 crash_sound = mixer.Sound('ar crashed.mp3')
-
+crash_sound.set_volume(0.3)
+bop_sound = mixer.Sound('b0dedd1433038be.mp3')
+bop_sound.set_volume(0.3)
+coin_sound = mixer.Sound('zvuk-vyibivaniya-monetyi-iz-igryi-super-mario-30119.mp3')
 
 
 class GameSprite(sprite.Sprite):
@@ -79,20 +82,26 @@ class GameSprite(sprite.Sprite):
         window.blit(self.image, self.rect)
 
 class Player(GameSprite):
+
+
     def update(self):
         keys = key.get_pressed()
         if keys[K_d] and self.rect.x < 700:
+
             self.rect.x += self.speed
             self.image = transform.rotate(player_image1, -10)
 
         elif keys[K_a] and self.rect.x > 150:
+
             self.rect.x -= self.speed
             self.image = transform.rotate(player_image1, 10)
         else:
             self.image = player_image1
         if keys[K_w] and self.rect.y > 50:
+
             self.rect.y -= self.speed
         if keys[K_s] and self.rect.y < 500:
+
             self.rect.y += self.speed
 
 class Enemy(GameSprite):
@@ -479,6 +488,8 @@ while level < 7:
                     finish = True
 
         if not finish:
+
+
             coins()
             frames += 1
             if frames >=60:
@@ -495,6 +506,11 @@ while level < 7:
             bg_y1 += bg_speed
             window.blit(bg, (0, bg_y2))
             bg_y2 += bg_speed
+
+            for e in event.get():
+                if e.type == KEYDOWN:
+                    if e.key == K_SPACE:
+                        bop_sound.play()
 
 
 
@@ -523,6 +539,7 @@ while level < 7:
             spritelist_coin = sprite.spritecollide(player, coin_group, True)
 
             for collide in spritelist_coin:
+                coin_sound.play()
                 coin_record += 1
                 with open('Record.txt', 'w') as f:
                         f.write(str(coin_record))
@@ -601,6 +618,7 @@ while level < 7:
             bostery.update()
             spike_group.update()
             coin_group.update()
+
 
     display.update()
     clock.tick(FPS)
