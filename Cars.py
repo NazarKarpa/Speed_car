@@ -9,11 +9,16 @@ import os
 import sys
 
 
+rang = 1
+
 coin_record = 0
 
 price_car1 = 0
 price_car2 = 15
 price_car3 = 50
+rang_1 = 2
+rang_2 = 3
+
 
 level = 1
 
@@ -61,11 +66,11 @@ enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 
 font_meny = font.SysFont('arial', 50)
 
-crash_sound = mixer.Sound('ar crashed.mp3')
+crash_sound = mixer.Sound('ar crashed (mp3cut.net).mp3')
 crash_sound.set_volume(0.3)
 bop_sound = mixer.Sound('b0dedd1433038be.mp3')
 bop_sound.set_volume(0.3)
-coin_sound = mixer.Sound('zvuk-vyibivaniya-monetyi-iz-igryi-super-mario-30119.mp3')
+coin_sound = mixer.Sound('zvuk-vyibivaniya-monetyi-iz-igryi-super-mario-30119 (mp3cut.net).mp3')
 
 
 class GameSprite(sprite.Sprite):
@@ -127,44 +132,125 @@ def random_car():
     global rand_speed
     global level
     global rand_interval
+    global rang
 
-    if level == 2:
-        rand_speed = randint(10, 15)
-        rand_interval = randint(1000, 2000)
+    if rang == 1:
+        if level == 2:
+            rand_speed = randint(7, 8)
+            rand_interval = randint(1000, 2000)
 
-    elif level == 1:
-        rand_speed = randint(5, 10)
-        rand_interval = randint(1000, 3000)
-    if level == 3:
-        rand_speed = randint(15, 20)
-        rand_interval = randint(500, 2000)
+        elif level == 1:
+            rand_speed = randint(3, 6)
+            rand_interval = randint(1000, 3000)
+        if level == 3:
+            rand_speed = randint(6, 9)
+            rand_interval = randint(500, 2000)
 
-    elif level == 4:
-        rand_speed = randint(25, 30)
-        rand_interval = randint(500, 1500)
-    elif level == 5:
-        rand_speed = randint(30, 35)
-        rand_interval = randint(500, 1000)
+        elif level == 4:
+            rand_speed = randint(10, 12)
+            rand_interval = randint(500, 1500)
+        elif level == 5:
+            rand_speed = randint(11, 14)
+            rand_interval = randint(500, 1000)
+
+        rand_race = randint(1, 4)
+        rand_y = randint(-200, -20)
+
+        enemy_image = choice(enemy_images)
+
+        if rand_race == 1:
+            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+
+            enemys.add(enemy)
+        if rand_race == 2:
+            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 3:
+            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 4:
+            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+            enemys.add(enemy)
+    elif rang == 2:
+        if level == 2:
+            rand_speed = randint(10, 13)
+            rand_interval = randint(1000, 2000)
+
+        elif level == 1:
+            rand_speed = randint(7, 11)
+            rand_interval = randint(1000, 3000)
+        if level == 3:
+            rand_speed = randint(12, 14)
+            rand_interval = randint(500, 2000)
+
+        elif level == 4:
+            rand_speed = randint(13, 16)
+            rand_interval = randint(500, 1500)
+        elif level == 5:
+            rand_speed = randint(15, 19)
+            rand_interval = randint(500, 1000)
+
+        rand_race = randint(1, 4)
+        rand_y = randint(-200, -20)
+
+        enemy_image = choice(enemy_images)
+
+        if rand_race == 1:
+            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+
+            enemys.add(enemy)
+        if rand_race == 2:
+            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 3:
+            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 4:
+            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+            enemys.add(enemy)
+
+    elif rang > 2:
+        if level == 2:
+            rand_speed = randint(11, 15)
+            rand_interval = randint(1000, 2000)
+
+        elif level == 1:
+            rand_speed = randint(9, 10)
+            rand_interval = randint(1000, 3000)
+        if level == 3:
+            rand_speed = randint(14, 18)
+            rand_interval = randint(500, 2000)
+
+        elif level == 4:
+            rand_speed = randint(17, 20)
+            rand_interval = randint(500, 1500)
+        elif level == 5:
+            rand_speed = randint(19, 21)
+            rand_interval = randint(500, 1000)
+
+        rand_race = randint(1, 4)
+        rand_y = randint(-200, -20)
+
+        enemy_image = choice(enemy_images)
+
+        if rand_race == 1:
+            enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
+
+            enemys.add(enemy)
+        if rand_race == 2:
+            enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 3:
+            enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
+            enemys.add(enemy)
+        if rand_race == 4:
+            enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
+            enemys.add(enemy)
 
 
-    rand_race = randint(1, 4)
-    rand_y = randint(-200, -20)
 
-    enemy_image = choice(enemy_images)
 
-    if rand_race == 1:
-        enemy = Enemy(enemy_image, 50, 100, 210, rand_y, rand_speed)
 
-        enemys.add(enemy)
-    if rand_race == 2:
-        enemy = Enemy(enemy_image, 50, 100, 350, rand_y, rand_speed)
-        enemys.add(enemy)
-    if rand_race == 3:
-        enemy = Enemy(enemy_image, 50, 100, 500, rand_y, rand_speed)
-        enemys.add(enemy)
-    if rand_race == 4:
-        enemy = Enemy(enemy_image, 50, 100, 630, rand_y, rand_speed)
-        enemys.add(enemy)
 
 
 
@@ -211,6 +297,11 @@ def coins():
     global coin_record
     with open('Record.txt', 'r') as f:
         coin_record = int(f.readline())
+
+def rangs():
+    global rang
+    with open('rang.txt', 'r') as f:
+        rang = int(f.readline())
 
 def random_spike():
     global bg_speed
@@ -293,10 +384,10 @@ finish = False
 
 clock = time.Clock()
 
-rand_intervaled = randint(500, 30000)
+rand_intervaled = randint(1000, 20000)
 rand_interval = randint(1000, 3000)
 rand_interval_spike = randint(1000, 10000)
-rand_interval_coin = randint(1000, 9000)
+rand_interval_coin = randint(2500, 8000)
 font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
 font3 = font.SysFont('Aril', 104)
@@ -338,7 +429,7 @@ while level < 7:
 
             window.blit(bg_shop, (0, 0))
 
-
+            rangs()
             coins()
 
 
@@ -356,31 +447,39 @@ while level < 7:
 
                         if coin_record > 15:
                             if if_buy2 == False:
-                                with open('Record.txt', 'w') as f:
-                                    coin_record -= 15
-                                    f.write(str(coin_record))
-                                    player_image1 = image.load('car-truck2 — копия.png')
-                                    player_image1 = transform.scale(player_image1, (50, 80))
+                                rangs()
+                                if rang > 1:
 
-                                    if_buy2 = True
+                                    with open('Record.txt', 'w') as f:
+                                        coin_record -= 15
+                                        f.write(str(coin_record))
+                                        player_image1 = image.load('car-truck2 — копия.png')
+                                        player_image1 = transform.scale(player_image1, (50, 80))
+
+                                        if_buy2 = True
                             elif if_buy2 == True:
                                 player_image1 = image.load('car-truck2 — копия.png')
                                 player_image1 = transform.scale(player_image1, (50, 80))
+                                player.speed = 8
+
 
                     if mouse_x <= 483 and mouse_y < 428 and mouse_x > 372 and mouse_y > 390:
 
                         if coin_record > 50:
                             if if_buy3 == False:
-                                with open('Record.txt', 'w') as f:
-                                    coin_record -= 50
-                                    f.write(str(coin_record))
-                                    player_image1 = image.load('pixel_racecar_green_missiles.png')
-                                    player_image1 = transform.scale(player_image1, (80, 80))
+                                rangs()
+                                if rang > 2:
+                                    with open('Record.txt', 'w') as f:
+                                        coin_record -= 50
+                                        f.write(str(coin_record))
+                                        player_image1 = image.load('pixel_racecar_green_missiles.png')
+                                        player_image1 = transform.scale(player_image1, (80, 80))
 
-                                    if_buy3 = True
+                                        if_buy3 = True
                             elif if_buy3 == True:
                                 player_image1 = image.load('pixel_racecar_green_missiles.png')
                                 player_image1 = transform.scale(player_image1, (80, 80))
+                                player.speed = 9
 
 
                     if mouse_x <= 140 and mouse_y < 428 and mouse_x > 20 and mouse_y > 390:
@@ -398,6 +497,13 @@ while level < 7:
             txt_coin = font2.render(f"Ціна: {price_car1}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 350))
 
+            txt_rang = font2.render(f"Ранг: {rang_1}", True, (201, 200, 100))
+            window.blit(txt_rang, (210, 370))
+
+            txt_rang2 = font2.render(f"Ранг: {rang_2}", True, (201, 200, 100))
+            window.blit(txt_rang2, (400, 370))
+
+
             txt_coin = font2.render(f"Ціна: {price_car3}", True, (201, 200, 100))
             window.blit(txt_coin, (400, 350))
 
@@ -406,6 +512,9 @@ while level < 7:
 
             txt_coin = font4.render(f"Очки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 10))
+
+            txt_coin = font4.render(f"Ранг: {rang}", True, (201, 200, 100))
+            window.blit(txt_coin, (50, 70))
 
             player_image_shop3.draw()
             player_image_shop2.draw()
@@ -489,10 +598,10 @@ while level < 7:
 
         if not finish:
 
-
+            rangs()
             coins()
             frames += 1
-            if frames >=60:
+            if frames >=20:
                 timer+=1
                 frames=0
 
@@ -594,11 +703,20 @@ while level < 7:
                 bg_speed = 15
                 level += 1
             if level == 6:
-                window.blit(txt_win_game, (280,260))
+                if rang > 3 or rang < 3:
+                    rang += 1
+                    with open('rang.txt', 'w') as f:
+                        f.write(str(rang))
+                    window.blit(txt_win_game, (280,260))
                 finish = True
+
             coins()
             txt_coin = font2.render(f"Очки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (30, 90))
+
+
+            txt_rang = font2.render(f"Ранг: {rang}", True, (201, 200, 100))
+            window.blit(txt_rang, (30, 120))
 
 
             txt_level = font2.render(f"Рівень: {level}", True, (201, 200, 100))
