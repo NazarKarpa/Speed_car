@@ -8,6 +8,7 @@ from random import randint, choice
 import os
 import sys
 
+saas = ''
 
 rang = 1
 
@@ -392,6 +393,7 @@ font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
 font3 = font.SysFont('Aril', 104)
 font4 = font.SysFont('Aril', 104)
+font5 = font.SysFont('Aril', 40)
 txt_lose_game = font3.render("You lose", True, (255, 0, 0))
 txt_win_game = font3.render('You win', True, (0, 255, 0))
 level = int(1)
@@ -429,8 +431,10 @@ while level < 7:
 
             window.blit(bg_shop, (0, 0))
 
+
             rangs()
             coins()
+
 
 
             for e in event.get():
@@ -516,6 +520,8 @@ while level < 7:
             txt_coin = font4.render(f"Ранг: {rang}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 70))
 
+
+
             player_image_shop3.draw()
             player_image_shop2.draw()
             player_image_shop1.draw()
@@ -539,6 +545,19 @@ while level < 7:
         for e in event.get():
             if e.type == MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
+                print(mouse_y,'-y', mouse_x,'-x')
+                if mouse_x <= 282 and mouse_y <= 24 and mouse_x > 10 and mouse_y > 8:
+                    if_buy2 = False
+                    if_buy3 = False
+                    if_buy1 = True
+                    coin_record = 0
+                    rang = 1
+                    with open('Record.txt', 'w') as f:
+                        f.write(str(coin_record))
+                    with open('rang.txt', 'w') as f:
+                        f.write(str(rang))
+
+
 
                 if mouse_x <= 553 and mouse_y <= 182 and mouse_x > 358 and mouse_y > 50:
                     'старт'
@@ -570,6 +589,7 @@ while level < 7:
                 level = 8
 
         if b < 1:
+
             window.blit(bg, (0, 0))
             button_QUIT.draw()
             button_shop.draw()
@@ -577,6 +597,8 @@ while level < 7:
             button_QUIT.update()
             button_shop.update()
             button_play.update()
+            txt_del = font5.render(f'Очистити статистику {saas}', True, (250, 255, 0))
+            window.blit(txt_del, (10, 0))
 
 
         if if_buy2 == True and b == 1:
@@ -601,7 +623,7 @@ while level < 7:
             rangs()
             coins()
             frames += 1
-            if frames >=20:
+            if frames >=60:
                 timer+=1
                 frames=0
 
