@@ -812,6 +812,7 @@ while level < 7:
 
 
             if timer < 10 and level == 1:
+
                 bg_speed = 4
 
             if timer > 10 and level == 1:
@@ -838,12 +839,15 @@ while level < 7:
                 bg_speed = 15
                 level += 1
             if level == 6:
+
                 if rang > 3 or rang < 3:
                     rang += 1
                     with open('rang.txt', 'w') as f:
                         f.write(str(rang))
                     window.blit(txt_win_game, (280,260))
                 finish = True
+
+
 
             coins()
             txt_coin = font2.render(f"Монетки: {coin_record}", True, (201, 200, 100))
