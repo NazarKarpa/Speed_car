@@ -67,6 +67,13 @@ enemy_images = [enemy_image1, enemy_image2, enemy_image3]
 
 font_meny = font.SysFont('arial', 50)
 
+image_nicel = image.load('nicel-removebg-preview.png')
+
+image_no_money = image.load('3133610.png')
+
+image_mega_no_money = image.load('31336101.png')
+
+
 crash_sound = mixer.Sound('ar crashed (mp3cut.net).mp3')
 crash_sound.set_volume(0.3)
 bop_sound = mixer.Sound('b0dedd1433038be.mp3')
@@ -294,6 +301,66 @@ def random_coin():
         coin_group.add(coin)
 
 
+def random_nicel():
+
+    rand_speed_coin = randint(5, 8)
+    rand_race = randint(1, 4)
+    rand_y = randint(-200, -20)
+
+    if rand_race == 1:
+        nicel = Enemy(image_nicel, 40, 50, 210, rand_y, rand_speed_coin)
+        nicel_group.add(nicel)
+    if rand_race == 2:
+        nicel = Enemy(image_nicel, 40, 50, 350, rand_y, rand_speed_coin)
+        nicel_group.add(nicel)
+    if rand_race == 3:
+        nicel = Enemy(image_nicel, 40, 50, 500, rand_y, rand_speed_coin)
+        nicel_group.add(nicel)
+    if rand_race == 4:
+        nicel = Enemy(image_nicel, 40, 50, 630, rand_y, rand_speed_coin)
+        nicel_group.add(nicel)
+
+
+def random_no_money():
+
+    rand_speed_coin = randint(8, 10)
+    rand_race = randint(1, 4)
+    rand_y = randint(-200, -20)
+
+    if rand_race == 1:
+        no_money = Enemy(image_no_money, 40, 50, 210, rand_y, rand_speed_coin)
+        no_money_groups.add(no_money)
+    if rand_race == 2:
+        no_money = Enemy(image_no_money, 40, 50, 350, rand_y, rand_speed_coin)
+        no_money_groups.add(no_money)
+    if rand_race == 3:
+        no_money = Enemy(image_no_money, 40, 50, 500, rand_y, rand_speed_coin)
+        no_money_groups.add(no_money)
+    if rand_race == 4:
+        no_money = Enemy(image_no_money, 40, 50, 630, rand_y, rand_speed_coin)
+        no_money_groups.add(no_money)
+
+def random_no_money_mega():
+
+    rand_speed_coin = randint(10, 12)
+    rand_race = randint(1, 4)
+    rand_y = randint(-200, -20)
+
+    if rand_race == 1:
+        no_money_mega = Enemy(image_mega_no_money, 40, 50, 210, rand_y, rand_speed_coin)
+        no_money_mega_groups.add(no_money_mega)
+    if rand_race == 2:
+        no_money_mega = Enemy(image_mega_no_money, 40, 50, 350, rand_y, rand_speed_coin)
+        no_money_mega_groups.add(no_money_mega)
+    if rand_race == 3:
+        no_money_mega = Enemy(image_mega_no_money, 40, 50, 500, rand_y, rand_speed_coin)
+        no_money_mega_groups.add(no_money_mega)
+    if rand_race == 4:
+        no_money_mega = Enemy(image_mega_no_money, 40, 50, 630, rand_y, rand_speed_coin)
+        no_money_mega_groups.add(no_money_mega)
+
+
+
 def coins():
     global coin_record
     with open('Record.txt', 'r') as f:
@@ -349,11 +416,13 @@ window = display.set_mode((WIDTH, HEIGHT))
 bg_shop = transform.scale(image_shop, (WIDTH, HEIGHT))
 bg = transform.scale(bg_image, (WIDTH, HEIGHT))
 
+nicel_group = sprite.Group()
 coin_group = sprite.Group()
 bostery = sprite.Group()
 spike_group = sprite.Group()
 enemys = sprite.Group()
-
+no_money_groups = sprite.Group()
+no_money_mega_groups = sprite.Group()
 lost = 0
 
 
@@ -389,6 +458,9 @@ rand_intervaled = randint(1000, 20000)
 rand_interval = randint(1000, 3000)
 rand_interval_spike = randint(1000, 10000)
 rand_interval_coin = randint(2500, 8000)
+rand_interval_nicel = randint(5000, 15000)
+rand_interval_no_money = randint(2000, 10000)
+rand_interval_no_money_mega = randint(4000, 15000)
 font1 = font.SysFont("Aril", 35)
 font2 = font.SysFont('Aril', 25)
 font3 = font.SysFont('Aril', 104)
@@ -408,6 +480,9 @@ start_time3 = time.get_ticks()
 start_time2 = time.get_ticks()
 start_time = time.get_ticks()
 start_time1 = time.get_ticks()
+start_time5 = time.get_ticks()
+start_time6 = time.get_ticks()
+start_time7 = time.get_ticks()
 
 b = 0
 
@@ -514,7 +589,7 @@ while level < 7:
             txt_coin = font2.render(f"Ціна: {price_car2}", True, (201, 200, 100))
             window.blit(txt_coin, (210, 350))
 
-            txt_coin = font4.render(f"Очки: {coin_record}", True, (201, 200, 100))
+            txt_coin = font4.render(f"Монетки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (50, 10))
 
             txt_coin = font4.render(f"Ранг: {rang}", True, (201, 200, 100))
@@ -623,7 +698,7 @@ while level < 7:
             rangs()
             coins()
             frames += 1
-            if frames >=60:
+            if frames >=55:
                 timer+=1
                 frames=0
 
@@ -664,10 +739,46 @@ while level < 7:
                 random_booster()
                 start_time2 = time.get_ticks()
 
+            if time.get_ticks() - start_time5 > rand_interval_nicel:
+                random_nicel()
+                start_time5 = time.get_ticks()
+
+            if time.get_ticks() - start_time6 > rand_interval_no_money:
+                random_no_money()
+                start_time6 = time.get_ticks()
+
+            if time.get_ticks() - start_time7 > rand_interval_no_money_mega:
+                random_no_money_mega()
+                start_time7 = time.get_ticks()
+
             spritelist = sprite.spritecollide(player, enemys, False)
             spritelist_boost = sprite.spritecollide(player, bostery, True)
             sprite_list_spike = sprite.spritecollide(player, spike_group, False)
             spritelist_coin = sprite.spritecollide(player, coin_group, True)
+            spritelist_nicel = sprite.spritecollide(player, nicel_group, True)
+            spritelist_no_money = sprite.spritecollide(player, no_money_groups, True)
+            spritelist_no_money_mega = sprite.spritecollide(player, no_money_mega_groups, True)
+
+            for collide in spritelist_no_money_mega:
+                coin_sound.play()
+                coin_record -= 15
+                with open('Record.txt', 'w') as f:
+                        f.write(str(coin_record))
+
+
+            for collide in spritelist_no_money:
+                coin_sound.play()
+                coin_record -= 5
+                with open('Record.txt', 'w') as f:
+                        f.write(str(coin_record))
+
+
+            for collide in spritelist_nicel:
+                coin_sound.play()
+                coin_record += 5
+                with open('Record.txt', 'w') as f:
+                        f.write(str(coin_record))
+
 
             for collide in spritelist_coin:
                 coin_sound.play()
@@ -677,6 +788,8 @@ while level < 7:
 
 
                 print(coin_record)
+
+
 
             for collide in sprite_list_spike:
                 window.blit(txt_lose_game, (280,260))
@@ -733,7 +846,7 @@ while level < 7:
                 finish = True
 
             coins()
-            txt_coin = font2.render(f"Очки: {coin_record}", True, (201, 200, 100))
+            txt_coin = font2.render(f"Монетки: {coin_record}", True, (201, 200, 100))
             window.blit(txt_coin, (30, 90))
 
 
@@ -752,12 +865,18 @@ while level < 7:
             bostery.draw(window)
             spike_group.draw(window)
             coin_group.draw(window)
+            nicel_group.draw(window)
+            no_money_groups.draw(window)
+            no_money_mega_groups.draw(window)
 
             player.update()
             enemys.update()
             bostery.update()
             spike_group.update()
             coin_group.update()
+            nicel_group.update()
+            no_money_groups.update()
+            no_money_mega_groups.update()
 
 
     display.update()
